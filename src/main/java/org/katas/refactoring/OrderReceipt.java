@@ -2,44 +2,25 @@ package org.katas.refactoring;
 
 public class OrderReceipt {
     private Order orderList;
+    private Character NEW_TAB = '\t';
+    private Character NEW_LINE = '\n';
+    private String TOP_RECEIPT = "======Printing Orders======" + NEW_LINE;
+    private double totalSalesTax = 0d;
+    private double total = 0d;
+    private double computedSalesTax = 0d;
+    StringBuilder output = new StringBuilder();
 
     public OrderReceipt(Order orderList) {
         this.orderList = orderList;
     }
 
     public String printReceipt() {
-        Character newTab = '\t';
-        Character newLine = '\n';
-        String topReceipt = "======Printing Orders======" + newLine;
-
-        StringBuilder output = new StringBuilder();
-
-        output.append(topReceipt);
-
+        output.append(TOP_RECEIPT);
         output.append(orderList.getCustomerName());
         output.append(orderList.getCustomerAddress());
-
-        double totalSalesTax = 0d;
-        double total = 0d;
-        for (OrderItems orderItems : orderList.getLineItems()) {
-            output.append(orderItems.getDescription());
-            output.append(newTab);
-            output.append(orderItems.getPrice());
-            output.append(newTab);
-            output.append(orderItems.getQuantity());
-            output.append(newTab);
-            output.append(orderItems.totalAmount());
-            output.append(newLine);
-
-            double computedSalesTax = getComputedSalesTax(orderItems);
-            totalSalesTax += computedSalesTax;
-
-            total = getTotalAmount(total, orderItems, computedSalesTax);
-        }
-
-        output.append("Sales Tax").append(newTab).append(totalSalesTax);
-
-        output.append("Total Amount").append(newTab).append(total);
+        appendPrintInformation(orderList);
+        output.append("Sales Tax").append(NEW_TAB).append(totalSalesTax);
+        output.append("Total Amount").append(NEW_TAB).append(total);
         return output.toString();
     }
 
@@ -55,5 +36,22 @@ public class OrderReceipt {
     private double getTotal(double total, OrderItems orderItems, double computedSalesTax) {
         total += orderItems.totalAmount() + computedSalesTax;
         return total;
+    }
+
+    private void appendPrintInformation(Order orders) {
+        for (OrderItems orderItems : orders.getLineItems()) {
+            output.append(orderItems.getDescription());
+            output.append(NEW_TAB);
+            output.append(orderItems.getPrice());
+            output.append(NEW_TAB);
+            output.append(orderItems.getQuantity());
+            output.append(NEW_TAB);
+            output.append(orderItems.totalAmount());
+            output.append(NEW_LINE);
+            computedSalesTax = getComputedSalesTax(orderItems);
+            totalSalesTax += computedSalesTax;
+
+            total = getTotalAmount(total, orderItems, computedSalesTax);
+        }
     }
 }
