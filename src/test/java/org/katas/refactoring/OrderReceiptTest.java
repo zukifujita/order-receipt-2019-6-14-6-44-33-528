@@ -1,16 +1,14 @@
 package org.katas.refactoring;
 
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class OrderReceiptTest {
     @Test
-    public void shouldPrintCustomerInformationOnOrder() {
-        Order order = new Order("Mr X", "Chicago, 60601", new ArrayList<LineItem>());
+    public void should_print_customer_information_on_order() {
+        Order order = new Order("Mr X", "Chicago, 60601", new ArrayList<>());
         OrderReceipt receipt = new OrderReceipt(order);
 
         String output = receipt.printReceipt();
@@ -19,13 +17,13 @@ public class OrderReceiptTest {
     }
 
     @Test
-    public void shouldPrintLineItemAndSalesTaxInformation() {
-        ArrayList<LineItem> lineItems = new ArrayList<LineItem>() {{
-            add(new LineItem("milk", 10.0, 2));
-            add(new LineItem("biscuits", 5.0, 5));
-            add(new LineItem("chocolate", 20.0, 1));
+    public void should_print_line_item_and_sales_tax_information() {
+        ArrayList<OrderItems> orderLists = new ArrayList<OrderItems>() {{
+            add(new OrderItems("milk", 10.0, 2));
+            add(new OrderItems("biscuits", 5.0, 5));
+            add(new OrderItems("chocolate", 20.0, 1));
         }};
-        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems));
+        OrderReceipt receipt = new OrderReceipt(new Order(null, null, orderLists));
 
         String output = receipt.printReceipt();
 
